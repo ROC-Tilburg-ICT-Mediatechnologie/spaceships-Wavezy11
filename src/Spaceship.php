@@ -28,21 +28,34 @@ class Spaceship
     // Properties
     public bool $isAlive;
     public int $fuel;
+    public int $maxfuel;
     public int $hitPoints;
-    public int $ammo;
 
+    public int $healingitems;
+    
+    
     // Constructor
     // We maken gebruik van default values om het gebruikers (andere programmeurs) gemakkelijk te maken de code
     // te gebruiken. Daarnaast ontbreekt de mogelijkheid binnen PHP om de contructor een overload te geven met een
     // custom constructor.
     public function __construct(
-        $ammo = 100,
+       
         $fuel = 100,
-        $hitPoints = 100
+        $maxfuel = 1000,
+        $hitPoints = 100,
+       
+        $healingitems = 2
+
+       
+    
     ) {
-        $this->ammo = $ammo;
+        
         $this->fuel = $fuel;
+        $this->maxfuel = $maxfuel;
         $this->hitPoints = $hitPoints;
+        
+        $this->healingitems = $healingitems;
+      
         // We kunnen kiezen om isAlive niet als parameter mee te geven met het argument dat
         // er geen logische use-case is om deze mogelijkheid te bieden. En schip waar een instantie
         // van gemaakt wordt, moet levend zijn.
@@ -60,27 +73,20 @@ class Spaceship
     // een returntype (en bedenk je welk type) en het keyword return. Zorg er in dit geval voor dat een functie altijd
     // de mogelijkheid heeft bij de return te komen (anders krijg je een melding).
     // Shoot
-    public function shoot(): int
+    public function useHealingItem()
     {
-        // Aparte variabelen gemaakt om self explaining code uit te leggen, geen magic numbers
-        $shot = 5;
-        $damage = 2;
-        // Studenten laten bedenken hoe dit er een beetje uit kan komen te zien.
-        // Standaard schade berekenen op 10 bijvoorbeeld.
-        if ($this->ammo - $shot >= 0) {
-            // short-hand code uitleggen
-            $this->ammo -= $shot;
-            // Hierboven is hetzelfde als:
-            // $this->ammo =  $this->ammo - $shot;
-            // Bij het bereiken van een return eindigt de uitvoer in de functie en 'springt' de code terug naar waar
-            // de functie is aangeroepen.
-            return ($shot * $damage);
-        } else {
-            // Hier zorgen we ervoor dat er altijd een waarde terug wordt gegeven.
-            return 0;
+        if ($this->hitPoints < 50 && $this->healingitems > 0) {
+            $this->hitPoints += 25; 
+            $this->healingitems; 
         }
     }
 
+    public function useMedkit(){
+        if ($this->healingitems > 0) {
+            $this->hitPoints = 100; 
+            $this->healingitems--; 
+        }
+    }
     // Hit
     // Wat is een parameter? Waarom hier wel? Data moet van buiten de scope van de functie komen, dus hebben we
     // de parameter(s) nodig om dit voor elkaar te krijgen. Ze het als een soort doorgeefluik.
@@ -104,15 +110,38 @@ class Spaceship
     // Move
     // Studenten kunnen hier zelf op proberen te komen.
     public function move()
-    {
+    {   
+        $maxfuel = 100;
+        $fuel = 100;
         $fuelUsage = 2;
-        if ($this->fuel - $fuelUsage > 0) {
+        if ($fuel - $fuelUsage > 0) {
             $this->fuel -= $fuelUsage;
         } else {
             $this->fuel = 0;
-        }
+        } 
     }
-    // Get/Set
-    // Deze zijn voor de volgende les en vanwege de public properties nog niet nodig.
-
+}
+class DeathStar extends Spaceship
+{
+    public function __construct($hitPoints = 1000, $fuel = 10000)
+    {
+        parent::__construct($hitPoints = $hitPoints, $fuel = $fuel);
+    }
+    public function setRandomValues()
+    {
+        $this->hitPoints = rand(500, 2000);
+        $this->fuel = rand(2500, 31000); 
+    }
+}
+class jamn extends Spaceship
+{
+    public function __construct($hitPoints = 1000, $fuel = 10000)
+    {
+        parent::__construct($hitPoints = $hitPoints);
+    }
+    public function setRandomValues()
+    {
+        $this->hitPoints = rand(500, 2000);
+        $this->fuel = rand(2500, 31000);   
+    }
 }
