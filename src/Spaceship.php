@@ -111,9 +111,9 @@ class Spaceship
     // Studenten kunnen hier zelf op proberen te komen.
     public function move()
     {   
-        $maxfuel = 100;
-        $fuel = 100;
-        $fuelUsage = 2;
+        $this->$maxfuel = 100;
+        $this->$fuel = 100;
+        $this->$fuelUsage = 2;
         if ($fuel - $fuelUsage > 0) {
             $this->fuel -= $fuelUsage;
         } else {
@@ -129,11 +129,11 @@ class DeathStar extends Spaceship
     }
     public function setRandomValues()
     {
-        $this->hitPoints = rand(500, 2000);
+        $this->hitPoints = rand(1600, 2100);
         $this->fuel = rand(2500, 31000); 
     }
 }
-class jamn extends Spaceship
+class GalaticRepublic extends Spaceship
 {
     public function __construct($hitPoints = 1000, $fuel = 10000)
     {
@@ -141,7 +141,8 @@ class jamn extends Spaceship
     }
     public function setRandomValues()
     {
-        $this->hitPoints = rand(500, 2000);
-        $this->fuel = rand(2500, 31000);   
+        $this->hitPoints = rand(1600, 2100);
+        $this->fuel = rand(2500, 31000);
+         
     }
 }
